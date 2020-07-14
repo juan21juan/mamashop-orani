@@ -18,11 +18,6 @@ class RepositoriesTests @Autowired
 
     @Test
     fun `When findByUsername then return User`() {
-        val john = User(null,"John Aparejado", "janjan", "123aaa", "ADMIN", "09091231231", "Orani, Bataan")
-        entityManager.persist(john)
-        entityManager.flush()
 
-        val user = userRepository.findByUsername(john.username)
-        assertThat(user).isEqualTo(john)
     }
 }

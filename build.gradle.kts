@@ -46,3 +46,7 @@ tasks.withType<KotlinCompile> {
 		jvmTarget = "1.8"
 	}
 }
+
+tasks.register("stage") {
+	dependsOn("build")
+}
