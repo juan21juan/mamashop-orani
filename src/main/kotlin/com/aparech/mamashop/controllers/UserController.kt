@@ -72,7 +72,7 @@ class UserController(@Autowired val userRepository: UserRepository) {
     @GetMapping("/id/{id}")
     fun findUserById(@PathVariable id:Long) : ResponseEntity<Optional<User>>
     {
-        if(userRepository.findById(id) != null)
+        if(userRepository.findById(id).isPresent)
             return ResponseEntity(userRepository.findById(id), HttpStatus.OK)
         else
             throw ResponseStatusException(HttpStatus.NOT_FOUND, "This user does not exist")
