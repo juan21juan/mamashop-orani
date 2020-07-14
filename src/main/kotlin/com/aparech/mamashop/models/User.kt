@@ -1,5 +1,6 @@
 package com.aparech.mamashop.models
 
+import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.GeneratedValue
@@ -8,11 +9,17 @@ import javax.persistence.GeneratedValue
 class User(
         @Id
         @GeneratedValue
-        var id : Long ? = null,
-        var fullName : String,
+        var id : Long,
+        @Column(nullable = false)
         val username : String,
-        val password : String,
-        val userType : String,
-        val contact : String,
-        val address : String
+        @Column(nullable = false)
+        var fullName : String,
+        @Column(nullable = false)
+        var password : String,
+        @Column(nullable = false)
+        var userType : String,
+        @Column(nullable = false)
+        var contact : String,
+        @Column(nullable = false)
+        var address : String
 )
