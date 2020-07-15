@@ -19,7 +19,7 @@ import javax.validation.Valid
 
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping
 class UserController(@Autowired val userRepository: UserRepository) {
 
     @GetMapping("/")
@@ -104,62 +104,8 @@ class UserController(@Autowired val userRepository: UserRepository) {
         return ResponseEntity(headers, HttpStatus.CREATED)
     }
 
-    @PutMapping("/{username}")
-    fun updateUser(@PathVariable username:String, @Valid @RequestBody user:User) : ResponseEntity<User>
-    {
-        val foundUser = userRepository.findByUsername(username)
-
-        if(foundUser != null) {
-            foundUser.fullName = user.fullName
-            foundUser.address = user.address
-            foundUser.contact = user.contact
-            userRepository.save(foundUser)
-
-            return ResponseEntity(foundUser, HttpStatus.OK)
-        }else {
-            throw ResponseStatusException(HttpStatus.NOT_FOUND, "This user does not exist")
-        }
-    }
-
-    @DeleteMapping("/{username}")
-    fun deleteUser(@PathVariable username:String) : ResponseEntity<Unit>{
-        val foundUser = userRepository.findByUsername(username)
-        if (foundUser != null) {
-            userRepository.delete(foundUser)
-            return ResponseEntity(HttpStatus.OK)
-        }else{
-            throw ResponseStatusException(HttpStatus.NOT_FOUND, "This user does not exist")
-        }
-    }
-
-    @PatchMapping("/changePassword/{username}")
-    fun updateUserPassword(@PathVariable username:String, @RequestBody password: String) : ResponseEntity<User>{
-        val foundUser = userRepository.findByUsername(username)
-        if (foundUser != null) {
-            foundUser.password = password
-            userRepository.save(foundUser)
-
-            return ResponseEntity(foundUser, HttpStatus.OK)
-        }else{
-            throw ResponseStatusException(HttpStatus.NOT_FOUND, "This user does not exist")
-        }
-    }
-
-    @PatchMapping("/userType/{username}")
-    fun updateUserType(@PathVariable username:String, @RequestBody userType: String) : ResponseEntity<User>{
-        val foundUser = userRepository.findByUsername(username)
-        if (foundUser != null) {
-            foundUser.userType = userType
-            userRepository.save(foundUser)
-
-            return ResponseEntity(foundUser, HttpStatus.OK)
-        }else{
-            throw ResponseStatusException(HttpStatus.NOT_FOUND, "This user does not exist")
-        }
-    }
-
     private fun buildPageUri(page: Pageable): String? {
-        return fromUriString("/api/books")
+        return fromUriString("/users")
                 .query("page={page}&size={size}")
                 .buildAndExpand(page.pageNumber, page.pageSize)
                 .toUriString()
