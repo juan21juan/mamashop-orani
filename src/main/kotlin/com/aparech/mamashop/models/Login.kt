@@ -1,31 +1,31 @@
 package com.aparech.mamashop.models
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 import java.time.LocalDateTime
-import java.util.*
 import javax.persistence.*
 
 @Entity
-data class User(
+data class Login(
         @Id
-        @GeneratedValue
-        var id : Long?,
+        @GeneratedValue(strategy = GenerationType.AUTO)
+        @Column(name = "id")
+        val id: Long?,
 
         @Column(nullable = false)
-        var fullName : String,
+        val username: String,
 
         @Column(nullable = false)
-        var contact : String,
+        var password: String,
 
         @Column(nullable = false)
-        var address : String,
+        var userType: String,
 
-        @Column(nullable = false)
-        var bday : Date,
-
-        @OneToOne(cascade = [CascadeType.ALL], mappedBy = "user")
-        val login : Login,
+        @OneToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "userId")
+        @JsonIgnore
+        var user: User,
 
         @CreatedDate
         @Column(name = "created_at", updatable = false)
@@ -34,4 +34,6 @@ data class User(
         @LastModifiedDate
         @Column(name = "updated_at")
         var updatedAt: LocalDateTime?
-)
+) {
+
+}

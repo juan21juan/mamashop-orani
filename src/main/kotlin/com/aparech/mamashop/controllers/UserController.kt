@@ -19,7 +19,7 @@ import javax.validation.Valid
 
 
 @RestController
-@RequestMapping
+@RequestMapping("/users")
 class UserController(@Autowired val userRepository: UserRepository) {
 
     @GetMapping("/")
@@ -69,30 +69,8 @@ class UserController(@Autowired val userRepository: UserRepository) {
         }
     }
 
-    @GetMapping("/id/{id}")
-    fun findUserById(@PathVariable id:Long) : ResponseEntity<Optional<User>>
-    {
-        if(userRepository.findById(id).isPresent)
-            return ResponseEntity(userRepository.findById(id), HttpStatus.OK)
-        else
-            throw ResponseStatusException(HttpStatus.NOT_FOUND, "This user does not exist")
-    }
-
-    @GetMapping("/username/{username}")
-    fun findUserByUsername(@PathVariable username:String) : ResponseEntity<User>
-    {
-        if(userRepository.findByUsername(username) != null)
-            return ResponseEntity(userRepository.findByUsername(username), HttpStatus.OK)
-        else
-            throw ResponseStatusException(HttpStatus.NOT_FOUND, "This user does not exist")
-    }
-
     @PostMapping
     fun createUser(@Valid @RequestBody user:User, uriComponentsBuilder: UriComponentsBuilder) : ResponseEntity<User>{
-        if(userRepository.findByUsername(user.username) != null){
-            throw ResponseStatusException(HttpStatus.FOUND, "Username not available")
-        }
-
         if(userRepository.findByFullName(user.fullName) != null){
             throw ResponseStatusException(HttpStatus.FOUND, "This user already exist")
         }
